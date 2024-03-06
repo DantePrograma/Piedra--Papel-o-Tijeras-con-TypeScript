@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const elements = [
   { id: 0, name: "SCISSORS", emoji: "✌🏻", beats: [2] },
@@ -14,18 +14,6 @@ export const useGame = () => {
   const [userWins, setUserWins] = useState(0);
   const [pcWins, setPcWins] = useState(0);
   const [draws, setDraws] = useState(0);
-
-  useEffect(() => {
-    if (winner !== null) {
-      if (winner === 1) {
-        setUserWins(userWins + 1);
-      } else if (winner === 2) {
-        setPcWins(pcWins + 1);
-      } else {
-        setDraws(draws + 1);
-      }
-    }
-  }, [winner]);
 
   const getWinner = (userChoice: number, computerChoice: number) => {
     if (userChoice === computerChoice) {
@@ -55,9 +43,20 @@ export const useGame = () => {
       setComputerChoice(randomChoice);
 
       setTimeout(() => {
-        setWinner(getWinner(choice, randomChoice));
+        const winners = getWinner(choice, randomChoice);
+        setWinner(winners);
+
+        if (winners === 1) {
+          setUserWins(userWins + 1);
+        } else if (winners === 2) {
+          setPcWins(pcWins + 1);
+        } else {
+          setDraws(draws + 1);
+        }
+
+        console.log(winners);
       }, 1500);
-    }, 3000);
+    }, 2000);
   };
 
   return {
